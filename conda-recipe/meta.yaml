@@ -23,7 +23,6 @@ build:
 
 requirements:
   build:
-    - gcc 4.8.5 # [linux]
     - patchelf # [linux]
     - boost 1.55.0 # [py2k]
     - boost 1.63.0.* # [py3k]
@@ -31,7 +30,6 @@ requirements:
     - python {{PY_VER}}*
 
   run:
-    - libgcc 4.8.5 # [linux]
     - patchelf # [linux]
     - boost 1.55.0 # [py2k]
     - boost 1.63.0.* # [py3k]
