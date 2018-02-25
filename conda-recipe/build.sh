@@ -4,7 +4,7 @@ cd build
 if [ $(uname) == "Darwin" ]; then
     CC=clang
     CXX=clang++
-    CXXFLAGS="-std=c++11 -stdlib=libc++"
+    CXXFLAGS="-std=c++11 -stdlib=libc++ ${CXXFLAGS}"
     
     export DYLIB="dylib"
     LINKER_FLAGS="-L${PREFIX}/lib"
@@ -13,6 +13,7 @@ else
     CXX=g++
     export DYLIB="so"
     LINKER_FLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib"
+    CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0 ${CXXFLAGS}"
 fi
 
 PY_VER=$(python -c "import sys; print('{}.{}'.format(*sys.version_info[:2]))")
@@ -31,7 +32,6 @@ cmake .. \
     -DPYTHON_INCLUDE_DIR=${PREFIX}/include/python${PY_ABI} \
     -DPYTHON_INCLUDE_DIR2=${PREFIX}/include/python${PY_ABI} \
     -DWITH_LOG=OFF \
-    -D_GLIBCXX_USE_CXX11_ABI=0
 
 make -j${CPU_COUNT}
 make install
