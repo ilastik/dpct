@@ -13,7 +13,10 @@ else
     CXX=g++
     export DYLIB="so"
     LINKER_FLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib"
-    CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0 ${CXXFLAGS}"
+    # enable compilation without CXX abi to stay compatible with gcc < 5 built packages
+    if [[ ${DO_NOT_BUILD_WITH_CXX11_ABI} == '1' ]]; then
+        CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0 ${CXXFLAGS}"
+    fi
 fi
 
 PY_VER=$(python -c "import sys; print('{}.{}'.format(*sys.version_info[:2]))")

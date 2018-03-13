@@ -20,6 +20,9 @@ build:
   msvc_compiler: 14.0  # [win]
   features:
     - vc14 # [win]
+  script_env:
+    # Control building with CXX11 abi
+    - DO_NOT_BUILD_WITH_CXX11_ABI  # [linux]
 
 requirements:
   build:
