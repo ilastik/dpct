@@ -14,7 +14,7 @@ source:
     path: ../
 
 build:
-  number: 2
+  number: 3
   string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_g{{GIT_FULL_HASH[:7]}}
   detect_binary_files_with_prefix: true
   msvc_compiler: 14.0  # [win]
@@ -28,18 +28,18 @@ requirements:
   build:
     - patchelf # [linux]
     - boost 1.55.0 # [py2k]
-    - boost 1.63.0.* # [py3k]
+    - boost {{ boost }} # [py3k]
     - lemon
-    - python {{PY_VER}}*
+    - python {{ python }}
 
   run:
     - patchelf # [linux]
     - boost 1.55.0 # [py2k]
-    - boost 1.63.0.* # [py3k]
+    - boost  # [py3k]
     - lemon
     # in order to suppor older linux distros after gcc5 switch:
-    - libstdcxx-ng >=5.4.0  # [linux]
-    - python {{PY_VER}}*
+    - libstdcxx-ng >={{ libstdcxxng }}  # [linux]
+    - python
 
 test:
   source_files:
