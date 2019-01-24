@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 message( "\nConfiguring python wrapper:" )
 
 # dependencies
-find_package( Boost REQUIRED COMPONENTS python serialization )
 find_package( PythonInterp REQUIRED )
+# python version needs to be specified since boost 1.6.7
+find_package( Boost 1.67 REQUIRED COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} serialization )
 
 if(WIN32)
   GET_FILENAME_COMPONENT(PYTHON_PREFIX "${PYTHON_EXECUTABLE}" PATH)

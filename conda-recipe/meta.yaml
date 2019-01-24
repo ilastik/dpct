@@ -14,31 +14,21 @@ source:
     path: ../
 
 build:
-  number: 3
+  number: 0
   string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_h{{PKG_HASH}}_g{{GIT_FULL_HASH[:7]}}
-  detect_binary_files_with_prefix: true
-  msvc_compiler: 14.0  # [win]
-  features:
-    - vc14 # [win]
-  script_env:
-    # Control building with CXX11 abi
-    - DO_NOT_BUILD_WITH_CXX11_ABI  # [linux]
 
 requirements:
   build:
-    - patchelf # [linux]
-    - boost 1.55.0 # [py2k]
+    - cmake
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+  host:
     - boost {{ boost }} # [py3k]
     - lemon
     - python {{ python }}
-
   run:
-    - patchelf # [linux]
-    - boost 1.55.0 # [py2k]
     - boost  # [py3k]
     - lemon
-    # in order to suppor older linux distros after gcc5 switch:
-    - libstdcxx-ng >={{ libstdcxxng }}  # [linux]
     - python
 
 test:
