@@ -26,11 +26,11 @@ requirements:
     - {{ compiler("cxx") }}
   host:
     - boost {{ boost }}
-    - lemon
+    - lemon {{ lemon }}
     - python {{ python }}
   run:
     - boost {{ boost }}
-    - lemon
+    - lemon {{ lemon }}
     - python {{ python }}
 
 test:
