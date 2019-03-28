@@ -2,9 +2,9 @@ mkdir build
 cd build
 
 if [ $(uname) == "Darwin" ]; then
-    LINKER_FLAGS="-L${PREFIX}/lib"
+    LDFLAGS="-undefined dynamic_lookup -L${PREFIX}/lib ${LDFLAGS}"
 else
-    LINKER_FLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib"
+    LDFLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib ${LDFLAGS}"
 fi
 
 cmake .. \
@@ -14,6 +14,8 @@ cmake .. \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DPYTHON_INCLUDE_DIRS=${PREFIX}/include/python${CONDA_PY} \
     -DWITH_LOG=OFF \
+    -DCMAKE_CXX_LINK_FLAGS="${LDFLAGS}" \
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
 
 make -j${CPU_COUNT}
 make install
