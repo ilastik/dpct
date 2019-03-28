@@ -1,0 +1,41 @@
+diff --git a/conda-recipe/build.sh b/conda-recipe/build.sh
+index 15b263d..2583478 100644
+--- a/conda-recipe/build.sh
++++ b/conda-recipe/build.sh
+@@ -2,9 +2,9 @@ mkdir build
+ cd build
+ 
+ if [ $(uname) == "Darwin" ]; then
+-    LINKER_FLAGS="-L${PREFIX}/lib"
++    LDFLAGS="-undefined dynamic_lookup -L${PREFIX}/lib ${LDFLAGS}"
+ else
+-    LINKER_FLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib"
++    LDFLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib ${LDFLAGS}"
+ fi
+ 
+ cmake .. \
+@@ -14,6 +14,9 @@ cmake .. \
+     -DPYTHON_EXECUTABLE=${PYTHON} \
+     -DPYTHON_INCLUDE_DIRS=${PREFIX}/include/python${CONDA_PY} \
+     -DWITH_LOG=OFF \
++    -DCMAKE_CXX_LINK_FLAGS="${LDFLAGS}" \
++    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
++\
+ 
+ make -j${CPU_COUNT}
+ make install
+ 
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index e1f2e0d..9b843d6 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -31,7 +31,7 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${PYTHO
+ set(PYDPCT_SRCS pydpct.cpp pythongraphreader.cpp)
+ 
+ add_library(pydpct SHARED ${PYDPCT_SRCS})#
+-target_link_libraries(pydpct dpct ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
++target_link_libraries(pydpct dpct ${Boost_LIBRARIES} )
+ if(WIN32)
+   set_target_properties(pydpct PROPERTIES PREFIX "" OUTPUT_NAME "dpct" SUFFIX ".pyd")
+ else()
+
