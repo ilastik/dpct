@@ -12,34 +12,32 @@ package:
 
 source:
     path: ../
+    patches:
+      # building with the "new" conda compilers resulted in strange test errors
+      # like: TypeError: Expecting an object of type dict; got an object of type dict instead
+      # Solution is not to link against python during the build
+      # See: https://github.com/casacore/python-casacore/issues/144
+      - 0001-fix-clang-build-on-osx.patch  # [osx]
 
 build:
-  number: 3
+  number: 1000
   string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_h{{PKG_HASH}}_g{{GIT_FULL_HASH[:7]}}
-  detect_binary_files_with_prefix: true
-  msvc_compiler: 14.0  # [win]
-  features:
-    - vc14 # [win]
-  script_env:
-    # Control building with CXX11 abi
-    - DO_NOT_BUILD_WITH_CXX11_ABI  # [linux]
+  skip:
+    true  # [py2k]
 
 requirements:
   build:
-    - patchelf # [linux]
-    - boost 1.55.0 # [py2k]
-    - boost {{ boost }} # [py3k]
-    - lemon
+    - cmake
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+  host:
+    - boost {{ boost }}
+    - lemon {{ lemon }}
     - python {{ python }}
-
   run:
-    - patchelf # [linux]
-    - boost 1.55.0 # [py2k]
-    - boost  # [py3k]
-    - lemon
-    # in order to suppor older linux distros after gcc5 switch:
-    - libstdcxx-ng >={{ libstdcxxng }}  # [linux]
-    - python
+    - boost {{ boost }}
+    - lemon {{ lemon }}
+    - python {{ python }}
 
 test:
   source_files:

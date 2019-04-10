@@ -1,0 +1,14 @@
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index e1f2e0d..9b843d6 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -31,7 +31,7 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${PYTHO
+ set(PYDPCT_SRCS pydpct.cpp pythongraphreader.cpp)
+ 
+ add_library(pydpct SHARED ${PYDPCT_SRCS})#
+-target_link_libraries(pydpct dpct ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
++target_link_libraries(pydpct dpct ${Boost_LIBRARIES} )
+ if(WIN32)
+   set_target_properties(pydpct PROPERTIES PREFIX "" OUTPUT_NAME "dpct" SUFFIX ".pyd")
+ else()
+
