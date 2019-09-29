@@ -10,7 +10,8 @@ REM if [ `uname` != "Darwin" ]; then
     REM set DYLIB="so"
 REM fi
 
-cmake .. -G "%CMAKE_GENERATOR%" ^
+cmake .. -G "NMake Makefiles" ^
+         -DCMAKE_BUILD_TYPE=%CONFIGURATION% ^
          -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
          -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -DPYTHON_EXECUTABLE="%PYTHON%" ^
@@ -31,8 +32,8 @@ REM cmake .. \
     REM -DPYTHON_INCLUDE_DIR2=${PREFIX}/include/python2.7 \
     REM -DWITH_LOG=OFF
 
-cmake --build . --target ALL_BUILD --config %CONFIGURATION%
+nmake all
 if errorlevel 1 exit 1
 
-cmake --build . --target INSTALL --config %CONFIGURATION%
+nmake install
 if errorlevel 1 exit 1
