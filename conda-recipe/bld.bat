@@ -15,7 +15,8 @@ cmake .. -G "NMake Makefiles" ^
          -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
          -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -DPYTHON_EXECUTABLE="%PYTHON%" ^
-         -DWITH_LOG="OFF"
+         -DWITH_LOG="OFF" ^
+         -DBoost_NO_BOOST_CMAKE=ON
 
 
 if errorlevel 1 exit 1
