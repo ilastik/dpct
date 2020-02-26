@@ -35,9 +35,9 @@ requirements:
     - lemon {{ lemon }}
     - python {{ python }}
   run:
-    - boost {{ pin_compatible('boost') }}
+    - {{ pin_compatible('boost') }}
     - lemon {{ lemon }}
-    - python {{ pin_compatible('python') }}
+    - {{ pin_compatible('python') }}
 
 test:
   source_files:
