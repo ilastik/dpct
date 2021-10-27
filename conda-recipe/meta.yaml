@@ -20,7 +20,7 @@ source:
       - 0001-fix-clang-build-on-osx.patch  # [osx]
 
 build:
-  number: 1000
+  number: 0
   string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_h{{PKG_HASH}}_g{{GIT_FULL_HASH[:7]}}
   skip:
     true  # [py2k]
@@ -31,9 +31,9 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
   host:
-    - boost {{ boost }}
-    - lemon {{ lemon }}
-    - python {{ python }}
+    - boost {{ boost }}*
+    - lemon {{ lemon }}*
+    - python {{ python }}*
   run:
     - {{ pin_compatible('boost') }}
     - lemon {{ lemon }}
