@@ -33,7 +33,7 @@ requirements:
   host:
     - boost {{ boost }}*
     - lemon {{ lemon }}*
-    - python {{ python }}*
+    - python
   run:
     - {{ pin_compatible('boost') }}
     - lemon {{ lemon }}
