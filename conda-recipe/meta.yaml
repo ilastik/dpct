@@ -12,12 +12,6 @@ package:
 
 source:
     path: ../
-    patches:
-      # building with the "new" conda compilers resulted in strange test errors
-      # like: TypeError: Expecting an object of type dict; got an object of type dict instead
-      # Solution is not to link against python during the build
-      # See: https://github.com/casacore/python-casacore/issues/144
-      - 0001-fix-clang-build-on-osx.patch  # [osx]
 
 build:
   number: 0

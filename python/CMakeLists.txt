@@ -14,8 +14,18 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${PYTHO
 # pydpct
 set(PYDPCT_SRCS pydpct.cpp pythongraphreader.cpp)
 
-add_library(pydpct SHARED ${PYDPCT_SRCS})#
-target_link_libraries(pydpct dpct ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
+add_library(pydpct SHARED ${PYDPCT_SRCS})
+
+# building with the "new" conda compilers resulted in strange test errors
+# like: TypeError: Expecting an object of type dict; got an object of type dict instead
+# Solution is not to link against python during the build
+# See: https://github.com/casacore/python-casacore/issues/144
+if(APPLE)
+  target_link_libraries(pydpct dpct ${Boost_LIBRARIES} )
+else()
+  target_link_libraries(pydpct dpct ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
+endif()
+
 if(WIN32)
   set_target_properties(pydpct PROPERTIES PREFIX "" OUTPUT_NAME "dpct" SUFFIX ".pyd")
 else()
