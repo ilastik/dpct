@@ -7,8 +7,11 @@ else
     LDFLAGS="-Wl,-rpath-link,${PREFIX}/lib -L${PREFIX}/lib ${LDFLAGS}"
 fi
 
+if [[ "${target_platform}" == "osx-64" ]]; then
+    export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+fi
+
 cmake .. \
-    -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=${PYTHON} \

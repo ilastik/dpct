@@ -41,6 +41,9 @@ test:
   imports:
     - dpct
 
+  commands:
+    - python test/test.py
+
 about:
     home: https://github.com/chaubold/dpct
     license: MIT
