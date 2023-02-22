@@ -12,6 +12,7 @@ if [[ "${target_platform}" == "osx-64" ]]; then
 fi
 
 cmake .. \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}" \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=${PYTHON} \
