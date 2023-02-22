@@ -11,6 +11,12 @@ if [[ "${target_platform}" == "osx-64" ]]; then
     export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
+declare -a CMAKE_PLATFORM_FLAGS
+if [[ "${target_platform}" == "osx-64" ]]; then
+  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
+fi
+
+
 cmake .. \
     -DCMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}" \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -24,6 +30,7 @@ cmake .. \
     -DBoost_LIBRARY_DIRS=${PREFIX}/lib \
     -DBoost_PYTHON_LIBRARY=${PREFIX}/lib/libboost_python${CONDA_PY}${SHLIB_EXT} \
     -DBoost_NO_BOOST_CMAKE=ON \
+    "${CMAKE_PLATFORM_FLAGS[@]}"
 
 make -j${CPU_COUNT}
 make install
