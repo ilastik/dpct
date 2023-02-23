@@ -17,10 +17,6 @@ jobs:
         with:
           fetch-depth: 0
           submodules: true
-      - uses: actions/checkout@v3
-        with:
-          repository: ilastik/ilastik-conda-recipes
-          path: ilastik-conda-recipes
       - uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
@@ -34,12 +30,12 @@ jobs:
       - name: linux conda build
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
-        run: conda mambabuild -c conda-forge -m ilastik-conda-recipes/ilastik-pins.yaml conda-recipe
+        run: conda mambabuild -c conda-forge conda-recipe
       - name: osx conda build
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
-        run:  conda mambabuild -c conda-forge -m ilastik-conda-recipes/ilastik-pins.yaml conda-recipe
+        run:  conda mambabuild -c conda-forge conda-recipe
       - name: windows conda build
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
-        run: conda mambabuild -c conda-forge -m ilastik-conda-recipes/ilastik-pins.yaml conda-recipe
+        run: conda mambabuild -c conda-forge conda-recipe
