@@ -8,7 +8,7 @@ else
 fi
 
 cmake .. \
-    -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET}" \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=${PYTHON} \
@@ -20,6 +20,7 @@ cmake .. \
     -DBoost_LIBRARY_DIRS=${PREFIX}/lib \
     -DBoost_PYTHON_LIBRARY=${PREFIX}/lib/libboost_python${CONDA_PY}${SHLIB_EXT} \
     -DBoost_NO_BOOST_CMAKE=ON \
+    "${CMAKE_PLATFORM_FLAGS[@]}" \
 
 make -j${CPU_COUNT}
 make install
