@@ -1,16 +1,16 @@
-{% set dpct_version = "1.0.0" %}
+# {% set dpct_version = "1.0.0" %}
+{% set dpct_version = GIT_DESCRIBE_TAG %}
+
+# If we're using a non-tagged revision, append '.postN' to the version
+{% if GIT_DESCRIBE_NUMBER is defined %}
+  {% if GIT_DESCRIBE_NUMBER|int != 0 %}
+    {% set dpct_version = dpct_version + '.post' + GIT_DESCRIBE_NUMBER %}
+  {% endif %}
+{% endif %}
+
 package:
     name: libdpct
     version: {{ dpct_version }}
-
-# {% set tagged_version = GIT_DESCRIBE_TAG %}
-
-# # If we're using a non-tagged revision, append '.postN' to the version
-# {% if GIT_DESCRIBE_NUMBER|int != 0 %}
-#   {% set tagged_version = tagged_version + '.post' + GIT_DESCRIBE_NUMBER %}
-# {% endif %}
-
-
 
 build:
   number: 0
@@ -38,14 +38,13 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
-        - boost-cpp {{ boost }}*
         - lemon {{ lemon }}*
       run:
         - lemon {{ lemon }}
 
   - name: dpct
     version: {{ dpct_version }}
-    script: build-python.sh  # [not win]
+    script: build-py.sh  # [not win]
     script: build-py.bat  # [win]
 
     requirements:
