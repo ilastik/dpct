@@ -5,7 +5,9 @@ project(dpct)
 # user defined configuration
 set(WITH_TESTS "false" CACHE BOOL "Build tests.")
 set(WITH_LOG "false" CACHE BOOL "Enable logs.")
+set(WITH_SHARED_LIB "true" CACHE BOOL "Build shared library.")
 set(WITH_PYTHON "true" CACHE BOOL "Build python wrapper.")
+set(WITH_TRACKING_BIN "false" CACHE BOOL "Build track executable.")
 
 if(WITH_LOG)
 	add_definitions(-DDEBUG_LOG)
@@ -34,7 +36,7 @@ if (NOT WIN32)
 endif()
 
 # C++ STL debug symbols
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(WITH_DEBUG_STL "False" CACHE BOOL "Build with C++ stl debug symbols?")
   if(WITH_DEBUG_STL)
     add_definitions(-D_GLIBCXX_DEBUG)
@@ -47,23 +49,27 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_extensions/)
 find_package( Lemon REQUIRED )
 include_directories(${LEMON_INCLUDE_DIR})
 
+
 # ------------------------------------------
 # build library
-file(GLOB_RECURSE SOURCES src/*.cpp)
-file(GLOB_RECURSE HEADERS include/*.h)
-add_library(dpct SHARED ${SOURCES} ${HEADERS})
-target_link_libraries(dpct ${LEMON_LIBRARIES})
+if(WITH_SHARED_LIB)
+    file(GLOB_RECURSE SOURCES src/*.cpp)
+    file(GLOB_RECURSE HEADERS include/*.h)
+    add_library(dpct SHARED ${SOURCES} ${HEADERS})
+    target_link_libraries(dpct ${LEMON_LIBRARIES})
 
-# installation
-install(TARGETS dpct 
-		ARCHIVE DESTINATION lib
-        LIBRARY DESTINATION lib
-        RUNTIME DESTINATION bin)
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" 
-		DESTINATION include/dpct 
-		PATTERN ".h" 
-		PATTERN ".git" EXCLUDE)
-
+    # installation
+    install(TARGETS dpct
+            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
+            RUNTIME DESTINATION bin)
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+            DESTINATION include/dpct
+            PATTERN ".h"
+            PATTERN ".git" EXCLUDE)
+else()
+  find_package(dpct REQUIRED)
+endif()
 # ------------------------------------------
 # add subdirectories
 if(WITH_TESTS)
@@ -72,7 +78,9 @@ if(WITH_TESTS)
 endif()
 
 if(WITH_PYTHON)
-  add_subdirectory(python)
+    add_subdirectory(python)
 endif()
 
-add_subdirectory(bin)
+if(WITH_TRACKING_BIN)
+    add_subdirectory(bin)
+endif()

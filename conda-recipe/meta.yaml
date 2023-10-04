@@ -1,51 +1,82 @@
+# {% set dpct_version = "1.0.0" %}
+{% set dpct_version = GIT_DESCRIBE_TAG %}
+
+# If we're using a non-tagged revision, append '.postN' to the version
+{% if GIT_DESCRIBE_NUMBER is defined %}
+  {% if GIT_DESCRIBE_NUMBER|int != 0 %}
+    {% set dpct_version = dpct_version + '.post' + GIT_DESCRIBE_NUMBER %}
+  {% endif %}
+{% endif %}
+
 package:
-    name: dpct
-  
-    {% set tagged_version = GIT_DESCRIBE_TAG %}
-
-    # If we're using a non-tagged revision, append '.postN' to the version
-    {% if GIT_DESCRIBE_NUMBER|int != 0 %}
-      {% set tagged_version = tagged_version + '.post' + GIT_DESCRIBE_NUMBER %}
-    {% endif %}
-
-    version: {{tagged_version}}
-
-source:
-    path: ../
+    name: libdpct
+    version: {{ dpct_version }}
 
 build:
   number: 0
-  string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_h{{PKG_HASH}}_g{{GIT_FULL_HASH[:7]}}
   skip:
     true  # [py2k]
 
-requirements:
-  build:
-    - cross-python_{{ target_platform }}    # [build_platform != target_platform]
-    - python                                # [build_platform != target_platform]
-    - cython                                # [build_platform != target_platform]
-    - cmake
-    - make  # [not win]
-    - {{ compiler("c") }}
-    - {{ compiler("cxx") }}
-  host:
-    - boost {{ boost }}*
-    - lemon {{ lemon }}*
-    - python
-  run:
-    - {{ pin_compatible('boost') }}
-    - lemon {{ lemon }}
-    - {{ pin_compatible('python') }}
+source:
+  path: ../
 
-test:
-  source_files:
-    - test
+outputs:
+  - name: libdpct
 
-  imports:
-    - dpct
+    version: {{ dpct_version }}
+    script: build-lib.sh  # [not win]
+    script: bld-lib.bat  # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage('libdpct', max_pin="x.x") }}
 
-  commands:
-    - python test/test.py
+
+    requirements:
+      build:
+        - cmake
+        - make  # [not win]
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - lemon {{ lemon }}*
+      run:
+        - lemon {{ lemon }}
+
+  - name: dpct
+    version: {{ dpct_version }}
+    script: build-py.sh  # [not win]
+    script: bld-py.bat  # [win]
+
+    requirements:
+      build:
+        # - cross-python_{{ target_platform }}    # [build_platform != target_platform]
+        - python                                # [build_platform != target_platform]
+        - cython                                # [build_platform != target_platform]
+        - cmake
+        - make  # [not win]
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage('libdpct', exact=True) }}
+        - boost {{ boost }}*
+        - lemon {{ lemon }}*
+        - python
+      run:
+        - {{ pin_subpackage('libdpct', exact=True) }}
+        - libdpct
+        - {{ pin_compatible('boost') }}
+        - {{ pin_compatible('python') }}
+
+
+    test:
+      source_files:
+        - test
+
+      imports:
+        - dpct
+
+      commands:
+        - python test/test.py
 
 about:
     home: https://github.com/chaubold/dpct

@@ -11,9 +11,10 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
+        python: ["3.8", "3.9", "3.10"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: true
@@ -30,12 +31,12 @@ jobs:
       - name: linux conda build
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
-        run: conda mambabuild -c conda-forge conda-recipe
+        run: conda mambabuild -c conda-forge --python=${{ matrix.python }} conda-recipe
       - name: osx conda build
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
-        run:  conda mambabuild -c conda-forge conda-recipe
+        run:  conda mambabuild -c conda-forge --python=${{ matrix.python }} conda-recipe
       - name: windows conda build
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
-        run: conda mambabuild -c conda-forge conda-recipe
+        run: conda mambabuild -c conda-forge --python=${{ matrix.python }} conda-recipe
