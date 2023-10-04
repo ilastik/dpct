@@ -36,7 +36,7 @@ if (NOT WIN32)
 endif()
 
 # C++ STL debug symbols
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(WITH_DEBUG_STL "False" CACHE BOOL "Build with C++ stl debug symbols?")
   if(WITH_DEBUG_STL)
     add_definitions(-D_GLIBCXX_DEBUG)
