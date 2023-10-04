@@ -1,4 +1,3 @@
-mkdir build
 cd build
 
 set CONFIGURATION=Release
@@ -16,6 +15,8 @@ cmake .. -G "NMake Makefiles" ^
          -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -DPYTHON_EXECUTABLE="%PYTHON%" ^
          -DWITH_LOG="OFF" ^
+         -DWITH_PYTHON="ON" ^
+         -DWITH_SHARED_LIB="OFF" ^
          -DBoost_NO_BOOST_CMAKE=ON
 
 
