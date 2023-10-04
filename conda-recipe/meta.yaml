@@ -25,7 +25,7 @@ outputs:
 
     version: {{ dpct_version }}
     script: build-lib.sh  # [not win]
-    script: build-lib.bat  # [win]
+    script: bld-lib.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage('libdpct', max_pin="x.x") }}
@@ -45,7 +45,7 @@ outputs:
   - name: dpct
     version: {{ dpct_version }}
     script: build-py.sh  # [not win]
-    script: build-py.bat  # [win]
+    script: bld-py.bat  # [win]
 
     requirements:
       build:
