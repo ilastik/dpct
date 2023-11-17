@@ -1,0 +1,9 @@
+name: bld-env
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - anaconda-client
+  - conda-build
+  - setuptools_scm
+  - boa
