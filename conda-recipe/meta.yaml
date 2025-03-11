@@ -15,7 +15,6 @@ source:
 
 build:
   number: 0
-  string: py{{CONDA_PY}}_{{PKG_BUILDNUM}}_h{{PKG_HASH}}_g{{GIT_FULL_HASH[:7]}}
   skip:
     true  # [py2k]
 
