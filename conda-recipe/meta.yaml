@@ -29,13 +29,10 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
   host:
-    - boost {{ boost }}*
+    - libboost-devel {{ boost }}*
+    - libboost-python-devel {{ boost }}*
     - lemon {{ lemon }}*
     - python
-  run:
-    - {{ pin_compatible('boost') }}
-    - lemon {{ lemon }}
-    - {{ pin_compatible('python') }}
 
 test:
   source_files:
