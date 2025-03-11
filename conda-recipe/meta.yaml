@@ -32,6 +32,8 @@ requirements:
     - libboost-python-devel {{ boost }}*
     - lemon {{ lemon }}*
     - python
+  run:
+    - python
 
 test:
   source_files:
