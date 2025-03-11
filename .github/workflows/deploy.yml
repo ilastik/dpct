@@ -17,24 +17,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
           auto-activate-base: true
           activate-environment: bld-env
           environment-file: .github/workflows/etc/bld-environment.yml
           condarc-file: .github/workflows/etc/.condarc
-          miniforge-variant: Miniforge3
-          use-mamba: true
+          channel-priority: strict
+          miniforge-version: latest
+          conda-solver: libmamba
       - name: linux conda build
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
-        run: conda mambabuild -c conda-forge conda-recipe
+        run: conda build -c conda-forge conda-recipe
       - name: osx conda build
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
-        run:  conda mambabuild -c conda-forge conda-recipe
+        run:  conda build -c conda-forge conda-recipe
       - name: windows conda build
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
-        run: conda mambabuild -c conda-forge conda-recipe
+        run: conda build -c conda-forge conda-recipe

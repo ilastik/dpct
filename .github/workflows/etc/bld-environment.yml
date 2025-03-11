@@ -6,4 +6,3 @@ dependencies:
   - anaconda-client
   - conda-build
   - setuptools_scm
-  - boa
