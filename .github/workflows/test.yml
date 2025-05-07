@@ -37,6 +37,11 @@ jobs:
         shell: bash -l {0}
         run:  conda build -c conda-forge conda-recipe
       - name: windows conda build
+        # HACK: due to a bug in conda-build need to point to
+        # libarchive explicitly.
+        # https://github.com/conda/conda/issues/12563#issuecomment-1494264704
+        env:
+          LIBARCHIVE: C:\Miniconda\Library\bin\archive.dll
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
         run: conda build -c conda-forge conda-recipe
