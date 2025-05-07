@@ -9,6 +9,7 @@ on:
 jobs:
   test-w-conda-recipe:
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
