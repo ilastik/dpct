@@ -1,26 +1,24 @@
 #ifndef DPCT_I_ARC_NOTIFIER_H
 #define DPCT_I_ARC_NOTIFIER_H
 
-#include <vector>
 #include <functional>
 #include <utility>
+#include <vector>
 
-namespace dpct
-{
+namespace dpct {
 
 class Arc;
 
-class IArcNotifier
-{
-public:
-	typedef std::function<void(Arc*)> NotificationFunction;
+class IArcNotifier {
+  public:
+    typedef std::function<void(Arc *)> NotificationFunction;
 
-	void registerObserverArc(Arc* arc);
+    void registerObserverArc(Arc *arc);
 
-	void visitObserverArcs(NotificationFunction notificationFunc);
+    void visitObserverArcs(NotificationFunction notificationFunc);
 
-protected:
-	std::vector<Arc*> observerArcs_;
+  protected:
+    std::vector<Arc *> observerArcs_;
 };
 
 } // namespace dpct

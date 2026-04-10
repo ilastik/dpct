@@ -1,46 +1,44 @@
 #define BOOST_TEST_MODULE test_graph
 
-#include <iostream>
-#include <boost/test/unit_test.hpp>
 #include "graph.h"
+#include <boost/test/unit_test.hpp>
+#include <iostream>
 
 using namespace dpct;
 
-BOOST_AUTO_TEST_CASE(node_arcs)
-{
+BOOST_AUTO_TEST_CASE(node_arcs) {
     Node n1(std::vector<double>(), nullptr);
     Node n2(std::vector<double>(), nullptr);
-    BOOST_CHECK_EQUAL(n1.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n1.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n1.getNumOutArcs(), 0);
 
-    BOOST_CHECK_EQUAL(n2.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n2.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n2.getNumOutArcs(), 0);
 
     Arc a(&n1, &n2, Arc::Move, {0.0});
 
-    BOOST_CHECK_EQUAL(n1.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n1.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n1.getNumOutArcs(), 1);
 
-    BOOST_CHECK_EQUAL(n2.getNumInArcs(),  1);
+    BOOST_CHECK_EQUAL(n2.getNumInArcs(), 1);
     BOOST_CHECK_EQUAL(n2.getNumOutArcs(), 0);
 
     a.getSourceNode()->removeOutArc(&a);
-    BOOST_CHECK_EQUAL(n1.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n1.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n1.getNumOutArcs(), 0);
 
-    BOOST_CHECK_EQUAL(n2.getNumInArcs(),  1);
+    BOOST_CHECK_EQUAL(n2.getNumInArcs(), 1);
     BOOST_CHECK_EQUAL(n2.getNumOutArcs(), 0);
 
     a.getTargetNode()->removeInArc(&a);
-    BOOST_CHECK_EQUAL(n1.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n1.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n1.getNumOutArcs(), 0);
 
-    BOOST_CHECK_EQUAL(n2.getNumInArcs(),  0);
+    BOOST_CHECK_EQUAL(n2.getNumInArcs(), 0);
     BOOST_CHECK_EQUAL(n2.getNumOutArcs(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(build_graph)
-{
+BOOST_AUTO_TEST_CASE(build_graph) {
     Graph::Configuration config(true, true, true);
     Graph g(config);
     BOOST_CHECK_EQUAL(g.getNumArcs(), 0);
@@ -52,31 +50,31 @@ BOOST_AUTO_TEST_CASE(build_graph)
 
     // -----------------------------------------------------
     // Timestep 1
-    Graph::NodePtr n_1_1 = g.addNode(0, {3, -1}, appearanceScore, disappearanceScore,
-                                        true, false, std::make_shared<NameData>("Timestep 1: Node 1"));
+    Graph::NodePtr n_1_1 = g.addNode(0, {3, -1}, appearanceScore, disappearanceScore, true, false,
+                                     std::make_shared<NameData>("Timestep 1: Node 1"));
 
-    Graph::NodePtr n_1_2 = g.addNode(0, {2, 5, -2}, appearanceScore, disappearanceScore,
-                                        true, false, std::make_shared<NameData>("Timestep 1: Node 2"));
+    Graph::NodePtr n_1_2 = g.addNode(0, {2, 5, -2}, appearanceScore, disappearanceScore, true, false,
+                                     std::make_shared<NameData>("Timestep 1: Node 2"));
 
-    Graph::NodePtr n_1_3 = g.addNode(0, {3, -5}, appearanceScore, disappearanceScore,
-                                        true, false, std::make_shared<NameData>("Timestep 1: Node 3"));
+    Graph::NodePtr n_1_3 = g.addNode(0, {3, -5}, appearanceScore, disappearanceScore, true, false,
+                                     std::make_shared<NameData>("Timestep 1: Node 3"));
 
     BOOST_CHECK_EQUAL(g.getNumArcs(), 6);
     BOOST_CHECK_EQUAL(g.getNumNodes(), 3);
 
     // -----------------------------------------------------
     // Timestep 2
-    Graph::NodePtr n_2_1 = g.addNode(1, {4, -2}, appearanceScore, disappearanceScore,
-                                        false, false, std::make_shared<NameData>("Timestep 2: Node 1"));
+    Graph::NodePtr n_2_1 = g.addNode(1, {4, -2}, appearanceScore, disappearanceScore, false, false,
+                                     std::make_shared<NameData>("Timestep 2: Node 1"));
 
-    Graph::NodePtr n_2_2 = g.addNode(1, {2, -2}, appearanceScore, disappearanceScore,
-                                        false, false, std::make_shared<NameData>("Timestep 2: Node 2"));
+    Graph::NodePtr n_2_2 = g.addNode(1, {2, -2}, appearanceScore, disappearanceScore, false, false,
+                                     std::make_shared<NameData>("Timestep 2: Node 2"));
 
-    Graph::NodePtr n_2_3 = g.addNode(1, {2, -4}, appearanceScore, disappearanceScore,
-                                        false, false, std::make_shared<NameData>("Timestep 2: Node 3"));
+    Graph::NodePtr n_2_3 = g.addNode(1, {2, -4}, appearanceScore, disappearanceScore, false, false,
+                                     std::make_shared<NameData>("Timestep 2: Node 3"));
 
-    Graph::NodePtr n_2_4 = g.addNode(1, {2,-2}, appearanceScore, disappearanceScore,
-                                        false, false, std::make_shared<NameData>("Timestep 2: Node 4"));
+    Graph::NodePtr n_2_4 = g.addNode(1, {2, -2}, appearanceScore, disappearanceScore, false, false,
+                                     std::make_shared<NameData>("Timestep 2: Node 4"));
 
     BOOST_CHECK_EQUAL(g.getNumArcs(), 14);
     BOOST_CHECK_EQUAL(g.getNumNodes(), 7);
@@ -91,14 +89,11 @@ BOOST_AUTO_TEST_CASE(build_graph)
 
     // -----------------------------------------------------
     // Timestep 3
-    Graph::NodePtr n_3_1 = g.addNode(2, {3, 2}, appearanceScore, disappearanceScore,
-                                        false, false);
+    Graph::NodePtr n_3_1 = g.addNode(2, {3, 2}, appearanceScore, disappearanceScore, false, false);
 
-    Graph::NodePtr n_3_2 = g.addNode(2, {2, 0}, appearanceScore, disappearanceScore,
-                                        false, false);
+    Graph::NodePtr n_3_2 = g.addNode(2, {2, 0}, appearanceScore, disappearanceScore, false, false);
 
-    Graph::NodePtr n_3_3 = g.addNode(2, {3, -3}, appearanceScore, disappearanceScore,
-                                        false, false);
+    Graph::NodePtr n_3_3 = g.addNode(2, {3, -3}, appearanceScore, disappearanceScore, false, false);
 
     BOOST_CHECK_EQUAL(g.getNumArcs(), 24);
     BOOST_CHECK_EQUAL(g.getNumNodes(), 10);
@@ -110,17 +105,13 @@ BOOST_AUTO_TEST_CASE(build_graph)
 
     // -----------------------------------------------------
     // Timestep 4
-    Graph::NodePtr n_4_1 = g.addNode(3, {4, -1}, appearanceScore, disappearanceScore,
-                                        false, true);
+    Graph::NodePtr n_4_1 = g.addNode(3, {4, -1}, appearanceScore, disappearanceScore, false, true);
 
-    Graph::NodePtr n_4_2 = g.addNode(3, {2, -1}, appearanceScore, disappearanceScore,
-                                        false, true);
+    Graph::NodePtr n_4_2 = g.addNode(3, {2, -1}, appearanceScore, disappearanceScore, false, true);
 
-    Graph::NodePtr n_4_3 = g.addNode(3, {2, -6}, appearanceScore, disappearanceScore,
-                                        false, true);
+    Graph::NodePtr n_4_3 = g.addNode(3, {2, -6}, appearanceScore, disappearanceScore, false, true);
 
-    Graph::NodePtr n_4_4 = g.addNode(3, {4, -2}, appearanceScore, disappearanceScore,
-                                        false, true);
+    Graph::NodePtr n_4_4 = g.addNode(3, {4, -2}, appearanceScore, disappearanceScore, false, true);
 
     BOOST_CHECK_EQUAL(g.getNumArcs(), 35); // doesn't add disappearance moves at sink
     BOOST_CHECK_EQUAL(g.getNumNodes(), 14);
@@ -169,8 +160,7 @@ BOOST_AUTO_TEST_CASE(build_graph)
     BOOST_CHECK_EQUAL(d1->isEnabled(), false);
 }
 
-BOOST_AUTO_TEST_CASE(node_active_arc_counts)
-{
+BOOST_AUTO_TEST_CASE(node_active_arc_counts) {
     Node n1(std::vector<double>(), nullptr);
     Node n2(std::vector<double>(), nullptr);
 

@@ -8,31 +8,25 @@
 #include "trackingalgorithm.h"
 #include "userdata.h"
 
-namespace dpct
-{
+namespace dpct {
 
 // each swap arc keeps track of the arc it would cut if used,
 // the arc that the path A that chose the swap arc would take,
 // and the arc that the previous path B will be redirected along
-class MagnussonSwapArcUserData : public UserData
-{
-public:
-    MagnussonSwapArcUserData(Arc* cutArc,
-                             Arc* replacementA,
-                             Arc* replacementB):
-        arc_(cutArc),
-        replacementA_(replacementA),
-        replacementB_(replacementB)
-    {}
-    Arc* getCutArc() const { return arc_; }
-    Arc* getReplacementAArc() const { return replacementA_; }
-    Arc* getReplacementBArc() const { return replacementB_; }
+class MagnussonSwapArcUserData : public UserData {
+  public:
+    MagnussonSwapArcUserData(Arc *cutArc, Arc *replacementA, Arc *replacementB)
+        : arc_(cutArc), replacementA_(replacementA), replacementB_(replacementB) {}
+    Arc *getCutArc() const { return arc_; }
+    Arc *getReplacementAArc() const { return replacementA_; }
+    Arc *getReplacementBArc() const { return replacementB_; }
 
     virtual std::string toString() const { return "Magnusson Swap Arc"; }
-private:
-    Arc* arc_;
-    Arc* replacementA_;
-    Arc* replacementB_;
+
+  private:
+    Arc *arc_;
+    Arc *replacementA_;
+    Arc *replacementB_;
 };
 
 // Klas Magnusson's cell tracking algorithm as in:
@@ -41,19 +35,19 @@ private:
 //     @ ISBI 2012
 // * Global linking of cell tracks using the Viterbi algorithm
 //     @ IEEE Transactions on Medical Imaging 2014
-class DPCT_API Magnusson : public TrackingAlgorithm
-{
-public:
+class DPCT_API Magnusson : public TrackingAlgorithm {
+  public:
     //--------------------------------------
     // typedefs
-    typedef std::function<Arc*(Node*)> SelectorFunction;
-    typedef std::function<double(Node*, Node*, Node*)> MotionModelScoreFunction;
+    typedef std::function<Arc *(Node *)> SelectorFunction;
+    typedef std::function<double(Node *, Node *, Node *)> MotionModelScoreFunction;
 
-public:
+  public:
     //--------------------------------------
     // API
-    // WARNING: setting usedArcsScoreZero=false yields undefined behaviour at the moment!
-    Magnusson(Graph* graph, bool withSwap, bool usedArcsScoreZero = true, bool useFastFirstIter = false);
+    // WARNING: setting usedArcsScoreZero=false yields undefined behaviour at the
+    // moment!
+    Magnusson(Graph *graph, bool withSwap, bool usedArcsScoreZero = true, bool useFastFirstIter = false);
 
     // specify a strategy to pick a path that starts from a node
     // through an arc.
@@ -70,30 +64,28 @@ public:
 
     // Find a set of paths through the graph that maximize the score.
     // Iterates until no path with positive score change can be found any more.
-    virtual double track(Solution& paths);
+    virtual double track(Solution &paths);
 
-private:
+  private:
     //--------------------------------------
     // methods
-	void updateNode(Node* n);
-	void increaseCellCount(Node* n);
-    void backtrack(Node* start,
-                   Path& p,
-                   TrackingAlgorithm::VisitorFunction nodeVisitor);
-    void batchFirstIteration(double& score, Solution& paths);
+    void updateNode(Node *n);
+    void increaseCellCount(Node *n);
+    void backtrack(Node *start, Path &p, TrackingAlgorithm::VisitorFunction nodeVisitor);
+    void batchFirstIteration(double &score, Solution &paths);
     void updateNodesByTimestep();
 
     // swap arc methods
-    void insertSwapArcsForNewUsedPath(Path& p);
-    void insertMoveSwapArcs(Arc* a);
-    void insertAppearanceSwapArcs(Arc* a);
-    void insertDisappearanceSwapArcs(Arc* a);
-    void cleanUpUsedSwapArcs(Path& p, std::vector<Path> &paths);
+    void insertSwapArcsForNewUsedPath(Path &p);
+    void insertMoveSwapArcs(Arc *a);
+    void insertAppearanceSwapArcs(Arc *a);
+    void insertDisappearanceSwapArcs(Arc *a);
+    void cleanUpUsedSwapArcs(Path &p, std::vector<Path> &paths);
     void removeSwapArcs();
-    void removeSwapArc(Arc* a);
+    void removeSwapArc(Arc *a);
     void removeArc(Arc *a);
 
-private:
+  private:
     //--------------------------------------
     // members
 
@@ -108,14 +100,13 @@ private:
 
     // swap arc members
     bool useFastFirstIter_;
-    std::vector<Arc*> swapArcs_;
+    std::vector<Arc *> swapArcs_;
 };
 
-
 // path selection strategies
-Arc* selectBestInArc(Node* n);
-Arc* selectSecondBestInArc(Node* n);
-Arc* selectAtRandom(Node* n);
+Arc *selectBestInArc(Node *n);
+Arc *selectSecondBestInArc(Node *n);
+Arc *selectAtRandom(Node *n);
 
 } // namespace dpct
 

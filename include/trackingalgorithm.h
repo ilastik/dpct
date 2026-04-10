@@ -3,43 +3,42 @@
 
 #include "config.hpp"
 
-#include <vector>
+#include <chrono>
 #include <functional>
 #include <memory>
-#include <chrono>
+#include <vector>
 
-#include "node.h"
 #include "arc.h"
 #include "graph.h"
+#include "node.h"
 
-namespace dpct
-{
+namespace dpct {
 
-class DPCT_API TrackingAlgorithm
-{
-public:
-    typedef std::vector<Arc*> Path;
+class DPCT_API TrackingAlgorithm {
+  public:
+    typedef std::vector<Arc *> Path;
     typedef std::vector<Path> Solution;
-	typedef std::function<void(Node*)> VisitorFunction;
+    typedef std::function<void(Node *)> VisitorFunction;
 
-public:
-	TrackingAlgorithm(Graph* graph);
+  public:
+    TrackingAlgorithm(Graph *graph);
 
-	// track cells, return overall score, and fill 'paths' vector with all chosen paths
-    virtual double track(Solution& paths) = 0;
-	double getElapsedSeconds();
+    // track cells, return overall score, and fill 'paths' vector with all chosen paths
+    virtual double track(Solution &paths) = 0;
+    double getElapsedSeconds();
 
-    void findNonintersectingBackwardPaths(Node* begin, Node* end, Solution& paths);
+    void findNonintersectingBackwardPaths(Node *begin, Node *end, Solution &paths);
 
     void printPath(TrackingAlgorithm::Path &p);
-protected:
-	Graph* graph_;
-	std::chrono::time_point<std::chrono::high_resolution_clock> startTime_;
-	std::chrono::time_point<std::chrono::high_resolution_clock> endTime_;
 
-	void breadthFirstSearchVisitor(Node* begin, VisitorFunction func);
-	void tic();
-	double toc(); // return time in seconds
+  protected:
+    Graph *graph_;
+    std::chrono::time_point<std::chrono::high_resolution_clock> startTime_;
+    std::chrono::time_point<std::chrono::high_resolution_clock> endTime_;
+
+    void breadthFirstSearchVisitor(Node *begin, VisitorFunction func);
+    void tic();
+    double toc(); // return time in seconds
 };
 
 } // namespace dpct

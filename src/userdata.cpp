@@ -2,27 +2,20 @@
 #include <stdexcept>
 #include <string>
 
-namespace dpct
-{
+namespace dpct {
 
-NameData::NameData(const std::string& name):
-	name_(name)
-{}
+NameData::NameData(const std::string &name) : name_(name) {}
 
-std::ostream& operator<<(std::ostream& lhs, const UserData& rhs)
-{
+std::ostream &operator<<(std::ostream &lhs, const UserData &rhs) {
     lhs << rhs.toString();
     return lhs;
 }
 
-std::ostream& operator<<(std::ostream& lhs, UserDataPtr rhs)
-{
+std::ostream &operator<<(std::ostream &lhs, UserDataPtr rhs) {
     lhs << rhs->toString();
     return lhs;
 }
 
-IUserDataHolder::IUserDataHolder(UserDataPtr data):
-    data_(data)
-{}
+IUserDataHolder::IUserDataHolder(UserDataPtr data) : data_(data) {}
 
 } // namespace dpct

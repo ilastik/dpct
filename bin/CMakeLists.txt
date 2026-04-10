@@ -5,8 +5,8 @@ set(Boost_USE_STATIC_LIBS OFF)
 find_package(Boost REQUIRED program_options)
 
 include_directories(
-	${Boost_INCLUDE_DIRS}
-	${PROJECT_SOURCE_DIR}/include/
+    ${Boost_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}/include/
 )
 
 file(GLOB BIN_SRCS *.cpp)

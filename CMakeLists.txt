@@ -8,7 +8,7 @@ set(WITH_LOG "false" CACHE BOOL "Enable logs.")
 set(WITH_PYTHON "true" CACHE BOOL "Build python wrapper.")
 
 if(WITH_LOG)
-	add_definitions(-DDEBUG_LOG)
+    add_definitions(-DDEBUG_LOG)
 endif()
 
 # ------------------------------------------
@@ -29,7 +29,7 @@ if (NOT WIN32)
     elseif(COMPILER_SUPPORTS_CXX0X)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
     else()
-	    message(SEND_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+        message(SEND_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
     endif()
 endif()
 
@@ -55,20 +55,20 @@ add_library(dpct SHARED ${SOURCES} ${HEADERS})
 target_link_libraries(dpct ${LEMON_LIBRARIES})
 
 # installation
-install(TARGETS dpct 
-		ARCHIVE DESTINATION lib
+install(TARGETS dpct
+        ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" 
-		DESTINATION include/dpct 
-		PATTERN ".h" 
-		PATTERN ".git" EXCLUDE)
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+        DESTINATION include/dpct
+        PATTERN ".h"
+        PATTERN ".git" EXCLUDE)
 
 # ------------------------------------------
 # add subdirectories
 if(WITH_TESTS)
-	enable_testing()
-	add_subdirectory(test)
+    enable_testing()
+    add_subdirectory(test)
 endif()
 
 if(WITH_PYTHON)
