@@ -52,16 +52,16 @@ include_directories(${LEMON_INCLUDE_DIR})
 # build library
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.h)
-add_library(dpct SHARED ${SOURCES} ${HEADERS})
-target_link_libraries(dpct ${LEMON_LIBRARIES})
+add_library(dpct_core SHARED ${SOURCES} ${HEADERS})
+target_link_libraries(dpct_core ${LEMON_LIBRARIES})
 
 # installation
-install(TARGETS dpct
+install(TARGETS dpct_core
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-        DESTINATION include/dpct
+        DESTINATION include/dpct_core
         PATTERN ".h"
         PATTERN ".git" EXCLUDE)
 

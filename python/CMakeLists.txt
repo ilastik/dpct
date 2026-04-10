@@ -21,9 +21,9 @@ add_library(pydpct SHARED ${PYDPCT_SRCS})
 # Solution is not to link against python during the build
 # See: https://github.com/casacore/python-casacore/issues/144
 if(APPLE)
-  target_link_libraries(pydpct dpct ${Boost_LIBRARIES} )
+  target_link_libraries(pydpct dpct_core ${Boost_LIBRARIES} )
 else()
-  target_link_libraries(pydpct dpct ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
+  target_link_libraries(pydpct dpct_core ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} )
 endif()
 
 if(WIN32)
