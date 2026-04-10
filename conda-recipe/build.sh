@@ -14,6 +14,8 @@ cmake .. \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DPYTHON_INCLUDE_DIRS=${PREFIX}/include/python${CONDA_PY} \
     -DWITH_LOG=OFF \
+    -DWITH_PYTHON=ON \
+    -DWITH_BIN=ON \
     -DCMAKE_CXX_LINK_FLAGS="${LDFLAGS}" \
     -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
     -DBoost_INCLUDE_DIR=${PREFIX}/include \

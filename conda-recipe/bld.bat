@@ -9,6 +9,8 @@ cmake .. -G "NMake Makefiles" ^
          -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -DPYTHON_EXECUTABLE="%PYTHON%" ^
          -DWITH_LOG="OFF" ^
+         -DWITH_PYTHON=ON ^
+         -DWITH_BIN=ON ^
          -DBoost_NO_BOOST_CMAKE=ON
 
 
