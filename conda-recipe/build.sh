@@ -15,7 +15,7 @@ cmake .. \
     -DPYTHON_INCLUDE_DIRS=${PREFIX}/include/python${CONDA_PY} \
     -DWITH_LOG=OFF \
     -DWITH_PYTHON=ON \
-    -DWITH_BIN=ON \
+    -DWITH_BIN=OFF \
     -DCMAKE_CXX_LINK_FLAGS="${LDFLAGS}" \
     -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
     "${CMAKE_PLATFORM_FLAGS[@]}" \

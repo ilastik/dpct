@@ -10,7 +10,7 @@ cmake .. -G "NMake Makefiles" ^
          -DPython_EXECUTABLE="%PYTHON%" ^
          -DWITH_LOG="OFF" ^
          -DWITH_PYTHON=ON ^
-         -DWITH_BIN=ON
+         -DWITH_BIN=OFF
 
 
 if errorlevel 1 exit 1
