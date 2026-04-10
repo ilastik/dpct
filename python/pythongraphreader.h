@@ -1,12 +1,10 @@
-#ifndef PYHON_GRAPH_READER
-#define PYHON_GRAPH_READER
+#ifndef PYTHON_GRAPH_READER
+#define PYTHON_GRAPH_READER
 
-#include <boost/python.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include "graphbuilder.h"
-#include "log.h"
-#include "trackingalgorithm.h"
-
 #include "graphreader.h"
 
 namespace dpct {
@@ -25,7 +23,7 @@ class PythonGraphReader : public GraphReader {
      * @param weightsDict the python dictionary containing the weights
      * @param graphBuilder magnusson or flow graph builder
      */
-    PythonGraphReader(boost::python::dict &graphDict, boost::python::dict &weightsDict, GraphBuilder *graphBuilder);
+    PythonGraphReader(pybind11::dict &graphDict, pybind11::dict &weightsDict, GraphBuilder *graphBuilder);
 
     /**
      * @brief Add nodes and arcs to the graph builder according to the model file.
@@ -38,19 +36,19 @@ class PythonGraphReader : public GraphReader {
      *
      * @returns Another python dictionary that looks exactly like the resulting JSON files.
      */
-    boost::python::object saveResult();
+    pybind11::object saveResult();
 
   private:
-    StateFeatureVector extractFeatures(boost::python::dict &entry, GraphReader::JsonTypes type);
-    FeatureVector readWeightsFromPython(boost::python::dict &weightsDict);
-    size_t getNumWeights(boost::python::dict &hypothesis, GraphReader::JsonTypes type, bool statesShareWeights);
+    StateFeatureVector extractFeatures(pybind11::dict &entry, GraphReader::JsonTypes type);
+    FeatureVector readWeightsFromPython(pybind11::dict &weightsDict);
+    size_t getNumWeights(pybind11::dict &hypothesis, GraphReader::JsonTypes type, bool statesShareWeights);
 
   private:
     /// python graph dictionary in the same style as if it was stored in a json file
-    boost::python::dict &graphDict_;
+    pybind11::dict &graphDict_;
 
     /// python dictionary containing the weights
-    boost::python::dict &weightsDict_;
+    pybind11::dict &weightsDict_;
 
     /// the weight vector loaded from file
     FeatureVector weights_;
