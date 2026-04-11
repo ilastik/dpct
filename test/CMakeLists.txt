@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.27)
 message( "\nConfiguring tests:" )
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 

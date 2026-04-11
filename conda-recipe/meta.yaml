@@ -28,8 +28,9 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
   host:
-    - libboost-devel {{ boost }}*
-    - libboost-python-devel {{ boost }}*
+    - pybind11
+    # bin relies on program options
+    - libboost-headers
     - lemon {{ lemon }}*
     - python
   run:

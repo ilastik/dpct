@@ -1,6 +1,6 @@
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
 
 #include "flowgraph.h"
 #include "flowgraphbuilder.h"
@@ -10,26 +10,19 @@
 #include "pythongraphreader.h"
 
 using namespace dpct;
-using namespace boost::python;
-
 /**
  * @brief Helper class to release / lock the Python GIL
  */
 class ScopedGILRelease {
   public:
-    inline ScopedGILRelease() { threadState_ = PyEval_SaveThread(); }
-    inline ~ScopedGILRelease() {
-        PyEval_RestoreThread(threadState_);
-        threadState_ = NULL;
-    }
-
+    ScopedGILRelease() : state_() {}
   private:
-    PyThreadState *threadState_;
+    pybind11::gil_scoped_release state_;
 };
 
-object flowBasedTracking(object &graphDict, object &weightsDict) {
-    dict graph = extract<dict>(graphDict);
-    dict weights = extract<dict>(weightsDict);
+pybind11::object flowBasedTracking(pybind11::object &graphDict, pybind11::object &weightsDict) {
+    pybind11::dict graph = graphDict;
+    pybind11::dict weights = weightsDict;
 
     FlowGraph flowGraph;
     FlowGraphBuilder graphBuilder(&flowGraph);
@@ -44,9 +37,9 @@ object flowBasedTracking(object &graphDict, object &weightsDict) {
     return pyGraphReader.saveResult();
 }
 
-object maxFlowTracking(object &graphDict, object &weightsDict) {
-    dict graph = extract<dict>(graphDict);
-    dict weights = extract<dict>(weightsDict);
+pybind11::object maxFlowTracking(pybind11::object &graphDict, pybind11::object &weightsDict) {
+    pybind11::dict graph = graphDict;
+    pybind11::dict weights = weightsDict;
 
     FlowGraph flowGraph;
     FlowGraphBuilder graphBuilder(&flowGraph);
@@ -61,9 +54,9 @@ object maxFlowTracking(object &graphDict, object &weightsDict) {
     return pyGraphReader.saveResult();
 }
 
-object magnussonTracking(object &graphDict, object &weightsDict) {
-    dict graph = extract<dict>(graphDict);
-    dict weights = extract<dict>(weightsDict);
+pybind11::object magnussonTracking(pybind11::object &graphDict, pybind11::object &weightsDict) {
+    pybind11::dict graph = graphDict;
+    pybind11::dict weights = weightsDict;
 
     Graph::Configuration config(true, true, true);
     Graph magnussonGraph(config);
@@ -87,19 +80,19 @@ object magnussonTracking(object &graphDict, object &weightsDict) {
 /**
  * @brief Python interface of 'dpct' module
  */
-BOOST_PYTHON_MODULE(dpct) {
-    def("trackFlowBased", flowBasedTracking, args("graph", "weights"),
+PYBIND11_MODULE(dpct, m) {
+    m.def("trackFlowBased", flowBasedTracking, pybind11::arg("graph"), pybind11::arg("weights"),
         "Use the flow-based tracker on a graph specified as a dictionary,"
         "in the same structure as the supported JSON format. Similarly, the weights are also given as dict.\n\n"
         "Returns a python dictionary similar to the result.json file, but also stores 'value' or 'divisionValue'"
         "for each detection and link.");
-    def("trackMaxFlow", maxFlowTracking, args("graph", "weights"),
+    m.def("trackMaxFlow", maxFlowTracking, pybind11::arg("graph"), pybind11::arg("weights"),
         "Run min-cost max-flow tracking on a graph specified as a dictionary,"
         "in the same structure as the supported JSON format. Similarly, the weights are also given as dict.\n\n"
         "The max-flow disregards division constraints and simply pushes as much flow through the net as possible.\n\n"
         "Returns a python dictionary similar to the result.json file, but also stores 'value' or 'divisionValue'"
         "for each detection and link.");
-    def("trackMagnusson", magnussonTracking, args("graph", "weights"),
+    m.def("trackMagnusson", magnussonTracking, pybind11::arg("graph"), pybind11::arg("weights"),
         "Use Magnusson's tracker on a graph specified as a dictionary,"
         "in the same structure as the supported JSON format. Similarly, the weights are also given as dict.\n\n"
         "Magnusson only approximates the residual graph and is thus much faster but not as close to the optimum, "
