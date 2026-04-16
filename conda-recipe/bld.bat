@@ -1,6 +1,11 @@
 mkdir build
 cd build
 
+
+if "%WITH_PYTHON%"=="" (
+    set "WITH_PYTHON=OFF"
+)
+
 set CONFIGURATION=Release
 
 cmake .. -G "NMake Makefiles" ^
@@ -9,7 +14,7 @@ cmake .. -G "NMake Makefiles" ^
          -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
          -DPython_EXECUTABLE="%PYTHON%" ^
          -DWITH_LOG="OFF" ^
-         -DWITH_PYTHON=ON ^
+         -DWITH_PYTHON=%WITH_PYTHON% ^
          -DWITH_BIN=OFF
 
 
