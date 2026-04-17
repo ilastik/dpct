@@ -1,17 +1,16 @@
 schema_version: 1
 
 context:
-  git_url: ../
-  git_tag: 1.5.0 # ${{ git.latest_tag(git_url) }}
+  version: 1.4.0
   lemon: ${{ lemon }}
 
 source:
-  path: ../
+  path: ..
 
 outputs:
   - package:
       name: dpct-core
-      version: ${{ git_tag }}
+      version: ${{ version }}
 
     build:
       number: 0
@@ -41,7 +40,7 @@ outputs:
 
   - package:
       name: dpct
-      version: ${{ git_tag }}
+      version: ${{ version }}
 
     build:
       number: 0
