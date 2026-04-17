@@ -76,7 +76,9 @@ outputs:
           - python test/test.py
         files:
           source:
-            - test
+            - test/*.py
+            - test/*.json
+
       - python:
           imports:
             - dpct
