@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project(dpct)
 
 include(CMakePackageConfigHelpers)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_extensions/)
 # ------------------------------------------
 # user defined configuration
 option(WITH_TESTS "Build tests." OFF)
