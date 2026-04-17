@@ -3,10 +3,12 @@ project(dpct)
 
 # ------------------------------------------
 # user defined configuration
-set(WITH_TESTS "false" CACHE BOOL "Build tests.")
-set(WITH_LOG "false" CACHE BOOL "Enable logs.")
-set(WITH_PYTHON "true" CACHE BOOL "Build python wrapper.")
-set(WITH_BIN "true" CACHE BOOL "Build track executable.")
+option(WITH_TESTS "Build tests." OFF)
+option(WITH_LOG "Enable logs." OFF)
+option(WITH_PYTHON "Build python wrapper." ON)
+option(WITH_BIN "Build track executable." ON)
+option(MULTI_STAGE_BUILD "Enable conda build of the Python packages with multiple outputs" OFF)
+
 
 if(WITH_LOG)
     add_definitions(-DDEBUG_LOG)
