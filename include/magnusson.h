@@ -1,7 +1,7 @@
 #ifndef DPCT_MAGNUSSON_H
 #define DPCT_MAGNUSSON_H
 
-#include "config.hpp"
+#include "config.h"
 
 #include <functional>
 

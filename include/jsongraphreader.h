@@ -1,7 +1,7 @@
 #ifndef JSON_GRAPH_READER
 #define JSON_GRAPH_READER
 
-#include "config.hpp"
+#include "config.h"
 
 #include <json/json.h>
 
