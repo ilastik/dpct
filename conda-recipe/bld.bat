@@ -6,6 +6,11 @@ if "%WITH_PYTHON%"=="" (
     set "WITH_PYTHON=OFF"
 )
 
+if "%MULTI_STAGE_BUILD%"=="" (
+    set "MULTI_STAGE_BUILD=OFF"
+)
+
+
 set CONFIGURATION=Release
 
 cmake .. -G "NMake Makefiles" ^
@@ -15,6 +20,7 @@ cmake .. -G "NMake Makefiles" ^
          -DPython_EXECUTABLE="%PYTHON%" ^
          -DWITH_LOG="OFF" ^
          -DWITH_PYTHON=%WITH_PYTHON% ^
+         -DMULTI_STAGE_BUILD=%MULTI_STAGE_BUILD% ^
          -DWITH_BIN=OFF
 
 

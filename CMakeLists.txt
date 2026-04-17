@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(dpct)
 
+include(CMakePackageConfigHelpers)
 # ------------------------------------------
 # user defined configuration
 option(WITH_TESTS "Build tests." OFF)
@@ -13,10 +14,6 @@ option(MULTI_STAGE_BUILD "Enable conda build of the Python packages with multipl
 if(WITH_LOG)
     add_definitions(-DDEBUG_LOG)
 endif()
-
-# ------------------------------------------
-# global configuration
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
 
 if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unused-local-typedefs")
@@ -44,28 +41,65 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   endif()
 endif()
 
-# ------------------------------------------
-# find dependencies
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_extensions/)
-find_package( Lemon REQUIRED )
-include_directories(${LEMON_INCLUDE_DIR})
 
-# ------------------------------------------
-# build library
-file(GLOB_RECURSE SOURCES src/*.cpp)
-file(GLOB_RECURSE HEADERS include/*.h)
-add_library(dpct_core SHARED ${SOURCES} ${HEADERS})
-target_link_libraries(dpct_core ${LEMON_LIBRARIES})
+if (MULTI_STAGE_BUILD)
+    find_package(dpct_core REQUIRED)
+else()
+    find_package(Lemon REQUIRED)
+    file(GLOB_RECURSE SOURCES src/*.cpp)
+    file(GLOB_RECURSE HEADERS include/*.h)
+    include_directories(${LEMON_INCLUDE_DIR})
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
+    add_library(dpct_core SHARED ${SOURCES} ${HEADERS})
+    target_link_libraries(dpct_core ${LEMON_LIBRARIES})
 
-# installation
-install(TARGETS dpct_core
+    target_include_directories(dpct_core
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+
+    set_target_properties(dpct_core PROPERTIES
+        EXPORT_NAME dpct_core
+    )
+
+    # installation
+    install(TARGETS dpct_core
+        EXPORT dpct_coreTargets
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
-        RUNTIME DESTINATION bin)
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+    )
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
         DESTINATION include/dpct_core
-        PATTERN ".h"
-        PATTERN ".git" EXCLUDE)
+        FILES_MATCHING PATTERN "*.h"
+    )
+
+    install(EXPORT dpct_coreTargets
+        FILE dpct_coreTargets.cmake
+        DESTINATION lib/cmake/dpct_core
+    )
+
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfigVersion.cmake"
+        VERSION 1.5.0
+        COMPATIBILITY SameMajorVersion
+    )
+    configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/dpct_coreConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfig.cmake"
+        INSTALL_DESTINATION lib/cmake/dpct_core
+    )
+
+    install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfigVersion.cmake"
+        DESTINATION lib/cmake/dpct_core
+    )
+
+
+endif()
 
 # ------------------------------------------
 # add subdirectories
