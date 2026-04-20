@@ -49,10 +49,10 @@ else()
     find_package(Lemon REQUIRED)
     file(GLOB_RECURSE SOURCES src/*.cpp)
     file(GLOB_RECURSE HEADERS include/*.h)
-    include_directories(${LEMON_INCLUDE_DIR})
+    include_directories(${Lemon_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
     add_library(dpct_core SHARED ${SOURCES} ${HEADERS})
-    target_link_libraries(dpct_core ${LEMON_LIBRARIES})
+    target_link_libraries(dpct_core ${Lemon_LIBRARIES})
 
     target_include_directories(dpct_core
         PUBLIC
