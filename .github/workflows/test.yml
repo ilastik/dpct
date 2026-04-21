@@ -14,34 +14,30 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: true
       - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          auto-activate-base: true
-          activate-environment: ""
+          auto-activate: true
+          activate-environment: bld-env
+          environment-file: .github/workflows/etc/build-environment.yml
           channel-priority: strict
           miniforge-version: latest
           conda-solver: libmamba
-      - name: install common dependencies
-        run: conda install -n base -c conda-forge conda-build -y
+          conda-remove-defaults: true
       - name: linux conda build
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
-        run: conda build -c conda-forge conda-recipe
+        run: rattler-build build -c conda-forge -r conda-recipe/recipe.yaml
       - name: osx conda build
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
-        run:  conda build -c conda-forge conda-recipe
+        run:  rattler-build build -c conda-forge -r conda-recipe/recipe.yaml
       - name: windows conda build
-        # HACK: due to a bug in conda-build need to point to
-        # libarchive explicitly.
-        # https://github.com/conda/conda/issues/12563#issuecomment-1494264704
-        env:
-          LIBARCHIVE: C:\Miniconda\Library\bin\archive.dll
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
-        run: conda build -c conda-forge conda-recipe
+        run: rattler-build build -c conda-forge -r conda-recipe\recipe.yaml
+

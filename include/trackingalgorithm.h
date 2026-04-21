@@ -1,7 +1,7 @@
 #ifndef DPCT_TRACKING_ALGORITHM_H
 #define DPCT_TRACKING_ALGORITHM_H
 
-#include "config.hpp"
+#include "config.h"
 
 #include <chrono>
 #include <functional>

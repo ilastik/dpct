@@ -1,7 +1,7 @@
 #ifndef DPCT_NODE_H
 #define DPCT_NODE_H
 
-#include "config.hpp"
+#include "config.h"
 
 #include <cstddef>
 #include <limits>

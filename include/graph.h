@@ -1,7 +1,7 @@
 #ifndef DPCT_GRAPH_H
 #define DPCT_GRAPH_H
 
-#include "config.hpp"
+#include "config.h"
 
 #include <functional>
 #include <map>

@@ -1,7 +1,7 @@
 #ifndef GRAPH_READER
 #define GRAPH_READER
 
-#include "config.hpp"
+#include "config.h"
 
 #include "log.h"
 #include <map>

@@ -1,0 +1,6 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Lemon REQUIRED)
+
+include("${CMAKE_CURRENT_LIST_DIR}/dpct_coreTargets.cmake")

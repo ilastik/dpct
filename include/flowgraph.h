@@ -1,7 +1,7 @@
 #ifndef DPCT_FLOWGRAPH_H
 #define DPCT_FLOWGRAPH_H
 
-#include "config.hpp"
+#include "config.h"
 
 #include <chrono>
 #include <lemon/adaptors.h>

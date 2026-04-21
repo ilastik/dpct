@@ -14,19 +14,20 @@ jobs:
     env:
       ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          auto-activate-base: true
+          auto-activate: true
           activate-environment: bld-env
-          environment-file: .github/workflows/etc/bld-environment.yml
+          environment-file: .github/workflows/etc/deploy-environment.yml
           condarc-file: .github/workflows/etc/.condarc
           channel-priority: strict
           miniforge-version: latest
           conda-solver: libmamba
+          conda-remove-defaults: true
       - name: linux conda build
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
