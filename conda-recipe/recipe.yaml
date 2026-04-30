@@ -34,9 +34,6 @@ outputs:
         weak:
           - ${{ pin_subpackage("dpct-core", exact=True) }}
 
-    tests:
-      - script:
-          - echo 1
 
   - package:
       name: dpct
