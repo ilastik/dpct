@@ -2,11 +2,11 @@
 #include <pybind11/stl.h>
 
 
-#include <dpct_core/flowgraph.h>
-#include <dpct_core/flowgraphbuilder.h>
-#include <dpct_core/graph.h>
-#include <dpct_core/magnusson.h>
-#include <dpct_core/magnussongraphbuilder.h>
+#include <dpct/flowgraph.h>
+#include <dpct/flowgraphbuilder.h>
+#include <dpct/graph.h>
+#include <dpct/magnusson.h>
+#include <dpct/magnussongraphbuilder.h>
 #include "pythongraphreader.h"
 
 using namespace dpct;

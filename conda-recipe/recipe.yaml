@@ -9,7 +9,7 @@ source:
 
 outputs:
   - package:
-      name: dpct-core
+      name: libdpct
       version: ${{ version }}
 
     build:
@@ -32,7 +32,7 @@ outputs:
         - lemon ${{ lemon }}*
       run_exports:
         weak:
-          - ${{ pin_subpackage("dpct-core", exact=True) }}
+          - ${{ pin_subpackage("libdpct", exact=True) }}
 
 
   - package:
@@ -63,10 +63,10 @@ outputs:
         - pybind11
         - lemon ${{ lemon }}*
         - python
-        - ${{ pin_subpackage("dpct-core", exact=True) }}
+        - ${{ pin_subpackage("libdpct", exact=True) }}
       run:
         - python
-        - ${{ pin_subpackage("dpct-core", upper_bound="x.x") }}
+        - ${{ pin_subpackage("libdpct", upper_bound="x.x") }}
 
     tests:
       - script:
