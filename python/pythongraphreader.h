@@ -4,8 +4,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include <dpct_core/graphbuilder.h>
-#include <dpct_core/graphreader.h>
+#include <dpct/graphbuilder.h>
+#include <dpct/graphreader.h>
 
 namespace dpct {
 

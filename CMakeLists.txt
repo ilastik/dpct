@@ -44,59 +44,59 @@ endif()
 
 
 if (MULTI_STAGE_BUILD)
-    find_package(dpct_core REQUIRED)
+    find_package(dpct REQUIRED)
 else()
     find_package(Lemon REQUIRED)
     file(GLOB_RECURSE SOURCES src/*.cpp)
     file(GLOB_RECURSE HEADERS include/*.h)
     include_directories(${Lemon_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
-    add_library(dpct_core SHARED ${SOURCES} ${HEADERS})
-    target_link_libraries(dpct_core ${Lemon_LIBRARIES})
+    add_library(dpct SHARED ${SOURCES} ${HEADERS})
+    target_link_libraries(dpct ${Lemon_LIBRARIES})
 
-    target_include_directories(dpct_core
+    target_include_directories(dpct
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
 
-    set_target_properties(dpct_core PROPERTIES
-        EXPORT_NAME dpct_core
+    set_target_properties(dpct PROPERTIES
+        EXPORT_NAME dpct
     )
 
     # installation
-    install(TARGETS dpct_core
-        EXPORT dpct_coreTargets
+    install(TARGETS dpct
+        EXPORT dpctTargets
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include
     )
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-        DESTINATION include/dpct_core
+        DESTINATION include/dpct
         FILES_MATCHING PATTERN "*.h"
     )
 
-    install(EXPORT dpct_coreTargets
-        FILE dpct_coreTargets.cmake
-        DESTINATION lib/cmake/dpct_core
+    install(EXPORT dpctTargets
+        FILE dpctTargets.cmake
+        DESTINATION lib/cmake/dpct
     )
 
     write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/dpctConfigVersion.cmake"
         VERSION 1.5.0
         COMPATIBILITY SameMajorVersion
     )
     configure_package_config_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/dpct_coreConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfig.cmake"
-        INSTALL_DESTINATION lib/cmake/dpct_core
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/dpctConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/dpctConfig.cmake"
+        INSTALL_DESTINATION lib/cmake/dpct
     )
 
     install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/dpct_coreConfigVersion.cmake"
-        DESTINATION lib/cmake/dpct_core
+        "${CMAKE_CURRENT_BINARY_DIR}/dpctConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/dpctConfigVersion.cmake"
+        DESTINATION lib/cmake/dpct
     )
 
 
