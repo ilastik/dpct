@@ -57,6 +57,11 @@ outputs:
         - if: not win
           then: test -f ${PREFIX}/lib/cmake/dpct/dpctConfigVersion.cmake
           else: if not exist %LIBRARY_LIB%\cmake\dpct\dpctConfigVersion.cmake exit 1
+        - cmake-package-check dpct --targets dpct
+        requirements:
+          run:
+            - cmake-package-check
+
 
   - package:
       name: dpct
