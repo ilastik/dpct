@@ -28,7 +28,7 @@ outputs:
         - ${{ compiler("c") }}
         - ${{ compiler("cxx") }}
       host:
-        - pybind11
+        - jsoncpp
         - lemon ${{ lemon }}*
       run_exports:
         weak:
