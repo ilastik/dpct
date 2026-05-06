@@ -35,14 +35,14 @@ endif()
 if (MULTI_STAGE_BUILD)
     find_package(dpct REQUIRED)
 else()
-    find_package(Lemon REQUIRED)
+    find_package(LEMON REQUIRED)
     find_package(jsoncpp REQUIRED)
     file(GLOB_RECURSE SOURCES src/*.cpp)
     file(GLOB_RECURSE HEADERS include/*.h)
-    include_directories(${Lemon_INCLUDE_DIR})
+    include_directories(${LEMON_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
     add_library(dpct SHARED ${SOURCES} ${HEADERS})
-    target_link_libraries(dpct ${Lemon_LIBRARIES} JsonCpp::JsonCpp)
+    target_link_libraries(dpct ${LEMON_LIBRARIES} JsonCpp::JsonCpp)
 
     target_include_directories(dpct
         PUBLIC
@@ -50,6 +50,7 @@ else()
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
 
+    add_library(dpct::dpct ALIAS dpct)
     set_target_properties(dpct PROPERTIES
         EXPORT_NAME dpct
     )
@@ -70,6 +71,7 @@ else()
     install(EXPORT dpctTargets
         FILE dpctTargets.cmake
         DESTINATION lib/cmake/dpct
+        NAMESPACE dpct::
     )
 
     write_basic_package_version_file(
