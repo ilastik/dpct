@@ -20,19 +20,8 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unused-local-typedefs")
 endif()
 
-# check for C++ 11 support (skip on windows):
-if (NOT WIN32)
-    include(CheckCXXCompilerFlag)
-    CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-    CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-    if(COMPILER_SUPPORTS_CXX11)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    elseif(COMPILER_SUPPORTS_CXX0X)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-    else()
-        message(SEND_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-    endif()
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # C++ STL debug symbols
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -47,12 +36,13 @@ if (MULTI_STAGE_BUILD)
     find_package(dpct REQUIRED)
 else()
     find_package(Lemon REQUIRED)
+    find_package(jsoncpp REQUIRED)
     file(GLOB_RECURSE SOURCES src/*.cpp)
     file(GLOB_RECURSE HEADERS include/*.h)
     include_directories(${Lemon_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
     add_library(dpct SHARED ${SOURCES} ${HEADERS})
-    target_link_libraries(dpct ${Lemon_LIBRARIES})
+    target_link_libraries(dpct ${Lemon_LIBRARIES} JsonCpp::JsonCpp)
 
     target_include_directories(dpct
         PUBLIC
