@@ -50,6 +50,7 @@ else()
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
 
+    add_library(dpct::dpct ALIAS dpct)
     set_target_properties(dpct PROPERTIES
         EXPORT_NAME dpct
     )
@@ -70,6 +71,7 @@ else()
     install(EXPORT dpctTargets
         FILE dpctTargets.cmake
         DESTINATION lib/cmake/dpct
+        NAMESPACE dpct::
     )
 
     write_basic_package_version_file(

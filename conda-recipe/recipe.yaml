@@ -42,7 +42,7 @@ outputs:
             - dpct
 
       - script:
-        - cmake-package-check dpct --targets dpct
+        - cmake-package-check dpct --targets dpct::dpct
         requirements:
           run:
             - cmake-package-check
