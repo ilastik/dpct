@@ -35,14 +35,14 @@ endif()
 if (MULTI_STAGE_BUILD)
     find_package(dpct REQUIRED)
 else()
-    find_package(Lemon REQUIRED)
+    find_package(LEMON REQUIRED)
     find_package(jsoncpp REQUIRED)
     file(GLOB_RECURSE SOURCES src/*.cpp)
     file(GLOB_RECURSE HEADERS include/*.h)
-    include_directories(${Lemon_INCLUDE_DIR})
+    include_directories(${LEMON_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
     add_library(dpct SHARED ${SOURCES} ${HEADERS})
-    target_link_libraries(dpct ${Lemon_LIBRARIES} JsonCpp::JsonCpp)
+    target_link_libraries(dpct ${LEMON_LIBRARIES} JsonCpp::JsonCpp)
 
     target_include_directories(dpct
         PUBLIC
