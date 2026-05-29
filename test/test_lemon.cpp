@@ -7,9 +7,9 @@
 #include <lemon/bellman_ford.h>
 
 #define private public
-#include "flowgraph.h"
-#include "graph.h"
-#include "residualgraph.h"
+#include <dpct/flowgraph.h>
+#include <dpct/graph.h>
+#include <dpct/residualgraph.h>
 
 using namespace dpct;
 

@@ -14,6 +14,10 @@ outputs:
 
     build:
       number: 0
+      script:
+        - if: not win
+          then: ${RECIPE_DIR}/build.sh
+          else: "%RECIPE_DIR%\\build.bat"
 
     requirements:
       build:
@@ -42,6 +46,25 @@ outputs:
         requirements:
           run:
             - cmake-package-check
+            - ${{ compiler("c") }}
+            - ${{ compiler("cxx") }}
+
+      - script:
+        - build-test.sh
+        files:
+          source:
+            - test/
+            - CMakeLists.txt
+          recipe:
+            - build-test.sh
+            - build.sh
+        requirements:
+          build:
+            - libboost-devel
+            - cmake
+            - if: not win
+              then:
+                - make
             - ${{ compiler("c") }}
             - ${{ compiler("cxx") }}
 
