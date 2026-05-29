@@ -29,5 +29,10 @@ if errorlevel 1 exit 1
 nmake all
 if errorlevel 1 exit 1
 
-nmake install
-if errorlevel 1 exit 1
+REM This is for the conda recipe really - the tests don't define install targets
+REM so if these are run in isolation, we want to skip.
+
+if /I "%WITH_TESTS%"=="OFF" (
+    nmake install
+    if errorlevel 1 exit 1
+)
