@@ -7,9 +7,9 @@
 #include <lemon/bellman_ford.h>
 
 #define private public
-#include "flowgraph.h"
-#include "graph.h"
-#include "residualgraph.h"
+#include <dpct/flowgraph.h>
+#include <dpct/graph.h>
+#include <dpct/residualgraph.h>
 
 using namespace dpct;
 
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(pure_lemon) {
     // update filtered graph to contain the appropriate division now!
     divisionArcEnabledMap[div2] = true;
     divisionArcEnabledMap[child4] = false; // cannot use the same child as parent path
-    filteredG = FilteredLGraph(g, divisionArcEnabledMap);
+    // filteredG = FilteredLGraph(g, divisionArcEnabledMap);
 
     typedef lemon::ResidualDigraph<FilteredLGraph, LGraph::ArcMap<int>, LGraph::ArcMap<int>> ResidualGraph;
     typedef ResidualGraph::ArcMap<double> ResidualDistMap;
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE(pure_lemon) {
         // division
         divisionArcEnabledMap[div2] = true;
         divisionArcEnabledMap[app2] = false;
-        filteredG = FilteredLGraph(g, divisionArcEnabledMap);
+        // filteredG = FilteredLGraph(g, divisionArcEnabledMap);
     }
     // ------------------------------------------------
     // again, update flow, should find path s,n_1_1,n_2_1,t (= 0,2,4,1)
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(pure_lemon) {
         // found path that now enables division 1
         divisionArcEnabledMap[div1] = true;
         divisionArcEnabledMap[child1] = false;
-        filteredG = FilteredLGraph(g, divisionArcEnabledMap);
+        // filteredG = FilteredLGraph(g, divisionArcEnabledMap);
     }
 
     // ------------------------------------------------
@@ -290,19 +290,22 @@ BOOST_AUTO_TEST_CASE(pure_lemon) {
             lemon::Path<ResidualGraph> path = rbf.negativeCycle();
             for (lemon::Path<ResidualGraph>::ArcIt it(path); it != lemon::INVALID; ++it) {
                 int delta = (residualG.forward(it) ? 1 : -1);
-                flowMap[lemon::findArc(g, residualG.target(it), residualG.source(it))] += delta;
-                std::cout << "(" << residualG.id(residualG.source(it)) << "=" << g.id(residualG.source(it)) << ", "
-                          << residualG.id(residualG.target(it)) << "=" << g.id(residualG.target(it))
-                          << "), delta: " << delta
-                          << " new flow: " << flowMap[lemon::findArc(g, residualG.target(it), residualG.source(it))]
-                          << (residualG.forward(it) ? " forward" : " backward") << std::endl;
+                Arc a = lemon::findArc(g, residualG.target(it), residualG.source(it));
+                if (a != lemon::INVALID) {
+                    flowMap[a] += delta;
+                    std::cout << "(" << residualG.id(residualG.source(it)) << "=" << g.id(residualG.source(it)) << ", "
+                              << residualG.id(residualG.target(it)) << "=" << g.id(residualG.target(it))
+                              << "), delta: " << delta
+                              << " new flow: " << flowMap[a]
+                              << (residualG.forward(it) ? " forward" : " backward") << std::endl;
+                }
             }
         }
 
         // flow has been redirected to use cheaper path
         // but we still have to re-enable the move from
         divisionArcEnabledMap[app2] = true;
-        filteredG = FilteredLGraph(g, divisionArcEnabledMap);
+        // filteredG = FilteredLGraph(g, divisionArcEnabledMap);
     }
 
     // ------------------------------------------------

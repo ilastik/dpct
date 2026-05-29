@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE test_graph
 
-#include "graph.h"
+#include <dpct/graph.h>
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 

@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE test_magnusson
 
-#include "graph.h"
-#include "magnusson.h"
+#include <dpct/graph.h>
+#include <dpct/magnusson.h>
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 

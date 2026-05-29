@@ -17,7 +17,7 @@ outputs:
       script:
         - if: not win
           then: ${RECIPE_DIR}/build.sh
-          else: "%RECIPE_DIR%\\bld.bat"
+          else: "%RECIPE_DIR%\\build.bat"
 
     requirements:
       build:
@@ -29,7 +29,7 @@ outputs:
         - ${{ compiler("cxx") }}
       host:
         - jsoncpp
-        - lemon ${{ lemon }}*
+        - lemon
       run_exports:
         weak:
           - ${{ pin_subpackage("libdpct", exact=True) }}
@@ -49,6 +49,32 @@ outputs:
             - ${{ compiler("c") }}
             - ${{ compiler("cxx") }}
 
+      - script:
+        - if: not win
+          then: build-test.sh
+          else: build-test.bat"
+        files:
+          source:
+            - test/
+            - CMakeLists.txt
+          recipe:
+          - if: not win
+            then:
+              - build-test.sh
+              - build.sh
+            else:
+              - build-test.bat
+              - build.bat
+        requirements:
+          build:
+            - libboost-devel
+            - cmake
+            - if: not win
+              then:
+                - make
+            - ${{ compiler("c") }}
+            - ${{ compiler("cxx") }}
+
   - package:
       name: dpct
       version: ${{ version }}
@@ -58,7 +84,7 @@ outputs:
       script:
         - if: not win
           then: ${RECIPE_DIR}/build-python.sh
-          else: "%RECIPE_DIR%\\bld-python.bat"
+          else: "%RECIPE_DIR%\\build-python.bat"
 
     requirements:
       build:
@@ -75,7 +101,7 @@ outputs:
         - ${{ compiler("cxx") }}
       host:
         - pybind11
-        - lemon ${{ lemon }}*
+        - lemon
         - python
         - ${{ pin_subpackage("libdpct", exact=True) }}
       run:
@@ -93,9 +119,10 @@ outputs:
       - python:
           imports:
             - dpct
-          pip_check: false
 
 about:
-  homepage: https://github.com/chaubold/dpct
+  homepage: https://github.com/ilastik/dpct
   license: MIT
   summary: Dynamic Programming Cell Tracking Solver Library
+  license_file:
+    - LICENSE
