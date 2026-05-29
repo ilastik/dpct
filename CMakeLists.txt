@@ -99,6 +99,7 @@ endif()
 if(WITH_TESTS)
     enable_testing()
     add_subdirectory(test)
+    list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 endif()
 
 if(WITH_PYTHON)
