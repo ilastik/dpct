@@ -14,10 +14,6 @@ outputs:
 
     build:
       number: 0
-      script:
-        - if: not win
-          then: ${RECIPE_DIR}/build.sh
-          else: "%RECIPE_DIR%\\bld.bat"
 
     requirements:
       build:
@@ -58,7 +54,7 @@ outputs:
       script:
         - if: not win
           then: ${RECIPE_DIR}/build-python.sh
-          else: "%RECIPE_DIR%\\bld-python.bat"
+          else: "%RECIPE_DIR%\\build-python.bat"
 
     requirements:
       build:
