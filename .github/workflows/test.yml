@@ -39,5 +39,6 @@ jobs:
       - name: windows conda build
         if: matrix.os == 'windows-latest'
         shell: cmd /C CALL {0}
-        run: rattler-build build -c conda-forge -r conda-recipe\recipe.yaml
+        # keep build as a workaround for tests failing otherwise when rattler-build removes temp files
+        run: rattler-build build --keep-build -c conda-forge -r conda-recipe\recipe.yaml
 
