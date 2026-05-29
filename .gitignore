@@ -2,3 +2,7 @@
 tags
 .ycm_extra_conf.pyc
 build
+
+output/
+.cache/
+.DS_store
