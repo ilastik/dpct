@@ -10,6 +10,10 @@ if "%MULTI_STAGE_BUILD%"=="" (
     set "MULTI_STAGE_BUILD=OFF"
 )
 
+if "%WITH_TESTS%"=="" (
+    set "WITH_TESTS=OFF"
+)
+
 
 set CONFIGURATION=Release
 

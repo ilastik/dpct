@@ -50,14 +50,21 @@ outputs:
             - ${{ compiler("cxx") }}
 
       - script:
-        - build-test.sh
+        - if: not win
+          then: build-test.sh
+          else: build-test.bat"
         files:
           source:
             - test/
             - CMakeLists.txt
           recipe:
-            - build-test.sh
-            - build.sh
+          - if: not win
+            then:
+              - build-test.sh
+              - build.sh
+            else:
+              - build-test.bat
+              - build.bat
         requirements:
           build:
             - libboost-devel
